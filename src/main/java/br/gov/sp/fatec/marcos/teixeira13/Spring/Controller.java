@@ -8,6 +8,6 @@ public class Controller {
     @RequestMapping("/")
     @ResponseBody
     String index() {
-        return "Aprendendo String Boot";
+        return "<h1>Aprendendo String Boot</h1>";
     }
 }
