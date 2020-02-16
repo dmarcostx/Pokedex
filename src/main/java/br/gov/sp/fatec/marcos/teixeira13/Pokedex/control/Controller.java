@@ -1,5 +1,6 @@
-package br.gov.sp.fatec.marcos.teixeira13.Pokedex;
+package br.gov.sp.fatec.marcos.teixeira13.Pokedex.control;
 
+import br.gov.sp.fatec.marcos.teixeira13.Pokedex.Buffer;
 import br.gov.sp.fatec.marcos.teixeira13.Pokedex.model.Pokemon;
 import br.gov.sp.fatec.marcos.teixeira13.Pokedex.repository.PokemonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
