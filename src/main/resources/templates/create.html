@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="../css/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<img th:src="@{'https://assets.pokemon.com/assets/cms2/img/pokedex/full/'+(${id} < 100 ? (${id} < 10 ? '00'+${id} : '0'+${id}) : ${id})+'.png'}"><br>
+<form action="/new" method="post">
+    <input name="numero" th:value="${id}" type="hidden">
+    <input autofocus name="nome" placeholder="Nome do Pokémon" required><br>
+    <button>Cadastar</button>
+</form>
+</body>
+</html>

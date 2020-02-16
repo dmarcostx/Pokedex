@@ -5,18 +5,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.3.0.BUILD-SNAPSHOT</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>2.3.0.M2</version>
+		<relativePath/>
 	</parent>
 	<groupId>br.gov.sp.fatec.marcos.teixeira13</groupId>
-	<artifactId>Spring</artifactId>
+	<artifactId>Pokedex</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Spring</name>
-	<description>Learning Spring Boot</description>
-
-	<properties>
-		<java.version>14</java.version>
-	</properties>
+	<name>Pokedex</name>
+	<description>Pokedex</description>
 
 	<dependencies>
 		<dependency>
@@ -26,6 +22,15 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+			<version>2.5.4</version>
 		</dependency>
 	</dependencies>
 
