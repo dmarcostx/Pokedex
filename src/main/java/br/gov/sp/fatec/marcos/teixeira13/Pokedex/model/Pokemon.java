@@ -7,9 +7,9 @@ import java.util.Optional;
 @Entity(name = "Pokemon")
 public class Pokemon {
     @Id
-    private short numero;
+    public short numero;
 
-    private String nome;
+    public String nome;
 
     public Pokemon() {
     }

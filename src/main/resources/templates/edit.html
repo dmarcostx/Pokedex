@@ -5,12 +5,12 @@
     <link href="../css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<h1>Cadastrar Pokémon</h1><br>
+<h1>Editar <span th:text="${pokemon.nome}"></span></h1><br>
 <img th:src="@{'https://assets.pokemon.com/assets/cms2/img/pokedex/full/'+(${id} < 100 ? (${id} < 10 ? '00'+${id} : '0'+${id}) : ${id})+'.png'}"><br>
-<form action="/edit" method="post">
+<form action="/new" method="post">
     <input name="numero" th:value="${id}" type="hidden">
-    <input autofocus name="nome" placeholder="Nome do Pokémon" required><br>
-    <button>Cadastrar</button>
+    <input autofocus name="nome" placeholder="Nome do Pokémon" required th:value="${pokemon.nome}"><br>
+    <button>Editar</button>
 </form>
 </body>
 </html>

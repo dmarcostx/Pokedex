@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Optional;
+
 @org.springframework.stereotype.Controller
 public class Controller {
 
@@ -21,26 +23,49 @@ public class Controller {
     }
 
     @RequestMapping("/new/{id}")
-    String create(@PathVariable final short id, Model model) {
-        model.addAttribute("id", id);
-        return "create";
+    String create(@PathVariable final short id, final Model model) {
+        if (!Buffer.contains(id, repository)) {
+            model.addAttribute("id", id);
+            return "create";
+        } else
+            return "error";
     }
 
     @RequestMapping(value = "new", method = RequestMethod.POST)
     String save(@RequestParam final short numero, @RequestParam final String nome) {
-        Pokemon.instance(numero, nome).map(repository::save);
+        Pokemon.instance(numero, nome).map(pokemon -> Buffer.save(pokemon, repository));
         return "error";
     }
 
     @RequestMapping("/edit/{id}")
-    String edit(@PathVariable final short id) {
-        System.out.println(id);
-        return "index";
+    String edit(@PathVariable final short id, final Model model) {
+        final Optional<Pokemon> optional = Buffer.get(id, repository);
+        if (optional.isPresent()) {
+            model.addAttribute("pokemon", optional.get());
+            return "edit";
+        } else
+            return "error";
+    }
+
+    @RequestMapping(value = "edit", method = RequestMethod.POST)
+    String update(@RequestParam final short numero, @RequestParam final String nome) {
+        Pokemon.instance(numero, nome).map(pokemon -> Buffer.save(pokemon, repository));
+        return "error";
     }
 
     @RequestMapping("/del/{id}")
-    String delete(@PathVariable final short id) {
-        System.out.println(id);
-        return "index";
+    String del(@PathVariable final short id, Model model) {
+        final Optional<Pokemon> optional = Buffer.get(id, repository);
+        if (optional.isPresent()) {
+            model.addAttribute("pokemon", optional.get());
+            return "delete";
+        } else
+            return "error";
+    }
+
+    @RequestMapping(value = "del", method = RequestMethod.POST)
+    String delete(@RequestParam final short id) {
+        Buffer.deleteById(id, repository);
+        return "error";
     }
 }
