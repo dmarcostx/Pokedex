@@ -1,4 +1,4 @@
-package br.gov.sp.fatec.marcos.teixeira13.Pokedex;
+package br.gov.sp.fatec.marcos.teixeira13.Pokedex.service;
 
 import br.gov.sp.fatec.marcos.teixeira13.Pokedex.model.Pokemon;
 import org.springframework.data.repository.CrudRepository;
@@ -18,11 +18,11 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.Random;
 
-public class Buffer {
+class Buffer {
 
     private final static HashMap<Short, String> buffer = new HashMap<>();
 
-    public static Optional<String> api(CrudRepository<Pokemon, Short> repository) {
+    static Optional<String> api(CrudRepository<Pokemon, Short> repository) {
         final short size = (short) repository.count();
         if (size < 1)
             return Optional.empty();
@@ -48,16 +48,16 @@ public class Buffer {
                 });
     }
 
-    public static boolean contains(final short id, CrudRepository<Pokemon, Short> repository) {
+    static boolean exists(final short id, CrudRepository<Pokemon, Short> repository) {
         return buffer.containsKey(id) || repository.existsById(id);
     }
 
-    public static void deleteById(final short id, CrudRepository<Pokemon, Short> repository) {
+    static void deleteById(final short id, CrudRepository<Pokemon, Short> repository) {
         buffer.remove(id);
         repository.deleteById(id);
     }
 
-    public static Optional<Pokemon> get(final short id, CrudRepository<Pokemon, Short> repository) {
+    static Optional<Pokemon> get(final short id, CrudRepository<Pokemon, Short> repository) {
         if (buffer.containsKey(id))
             return Pokemon.instance(id, buffer.get(id));
         final Optional<Pokemon> optional = repository.findById(id);
@@ -65,7 +65,7 @@ public class Buffer {
         return optional;
     }
 
-    public static Pokemon save(Pokemon pokemon, CrudRepository<Pokemon, Short> repository) {
+    static Pokemon save(Pokemon pokemon, CrudRepository<Pokemon, Short> repository) {
         buffer.put(pokemon.numero, pokemon.nome);
         return repository.save(pokemon);
     }

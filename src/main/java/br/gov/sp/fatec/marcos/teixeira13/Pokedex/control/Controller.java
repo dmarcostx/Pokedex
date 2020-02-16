@@ -1,8 +1,7 @@
 package br.gov.sp.fatec.marcos.teixeira13.Pokedex.control;
 
-import br.gov.sp.fatec.marcos.teixeira13.Pokedex.Buffer;
 import br.gov.sp.fatec.marcos.teixeira13.Pokedex.model.Pokemon;
-import br.gov.sp.fatec.marcos.teixeira13.Pokedex.repository.PokemonRepository;
+import br.gov.sp.fatec.marcos.teixeira13.Pokedex.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +15,7 @@ import java.util.Optional;
 public class Controller {
 
     @Autowired
-    private PokemonRepository repository;
+    private Service service;
 
     @RequestMapping("/")
     String index() {
@@ -25,7 +24,7 @@ public class Controller {
 
     @RequestMapping("/new/{id}")
     String create(@PathVariable final short id, final Model model) {
-        if (!Buffer.contains(id, repository)) {
+        if (!service.exists(id)) {
             model.addAttribute("id", id);
             return "create";
         } else
@@ -34,13 +33,13 @@ public class Controller {
 
     @RequestMapping(value = "new", method = RequestMethod.POST)
     String save(@RequestParam final short numero, @RequestParam final String nome) {
-        Pokemon.instance(numero, nome).map(pokemon -> Buffer.save(pokemon, repository));
+        Pokemon.instance(numero, nome).map(pokemon -> service.save(pokemon));
         return "error";
     }
 
     @RequestMapping("/edit/{id}")
     String edit(@PathVariable final short id, final Model model) {
-        final Optional<Pokemon> optional = Buffer.get(id, repository);
+        final Optional<Pokemon> optional = service.get(id);
         if (optional.isPresent()) {
             model.addAttribute("pokemon", optional.get());
             return "edit";
@@ -50,13 +49,13 @@ public class Controller {
 
     @RequestMapping(value = "edit", method = RequestMethod.POST)
     String update(@RequestParam final short numero, @RequestParam final String nome) {
-        Pokemon.instance(numero, nome).map(pokemon -> Buffer.save(pokemon, repository));
+        Pokemon.instance(numero, nome).map(pokemon -> service.save(pokemon));
         return "error";
     }
 
     @RequestMapping("/del/{id}")
     String del(@PathVariable final short id, Model model) {
-        final Optional<Pokemon> optional = Buffer.get(id, repository);
+        final Optional<Pokemon> optional = service.get(id);
         if (optional.isPresent()) {
             model.addAttribute("pokemon", optional.get());
             return "delete";
@@ -66,7 +65,7 @@ public class Controller {
 
     @RequestMapping(value = "del", method = RequestMethod.POST)
     String delete(@RequestParam final short id) {
-        Buffer.deleteById(id, repository);
+        service.deleteById(id);
         return "error";
     }
 }
