@@ -3,17 +3,14 @@ package br.gov.sp.fatec.marcos.teixeira13.Pokedex.service;
 import br.gov.sp.fatec.marcos.teixeira13.Pokedex.model.Pokemon;
 import org.springframework.data.repository.CrudRepository;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SealedObject;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.security.InvalidKeyException;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Random;
@@ -31,20 +28,17 @@ class Buffer {
             repository.findAll().forEach(pokemon -> buffer.put(pokemon.numero, pokemon.nome));
         }
         return new Random().ints(1, 810).boxed()
-                .map(Integer::shortValue).filter(buffer::containsKey)
-                .findAny().map(numero -> {
-                    ByteArrayOutputStream b = new ByteArrayOutputStream();
+                .map(Integer::shortValue).filter(buffer::containsKey).findAny().map(numero -> {
+                    byte[] bytes = new byte[0];
                     try {
                         final KeyPairGenerator ec = KeyPairGenerator.getInstance("RSA");
                         Cipher cipher = Cipher.getInstance("RSA");
                         cipher.init(Cipher.ENCRYPT_MODE, ec.generateKeyPair().getPublic());
-                        ObjectOutputStream o = new ObjectOutputStream(b);
-                        o.writeObject(new SealedObject(Pokemon.instance(numero, buffer.get(numero)).get(), cipher));
-                        o.close();
-                    } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IOException | IllegalBlockSizeException e) {
+                        bytes = cipher.doFinal((numero + ";" + buffer.get(numero)).getBytes());
+                    } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
                         e.printStackTrace();
                     }
-                    return Base64.getEncoder().encodeToString(b.toByteArray());
+                    return Arrays.toString(bytes);
                 });
     }
 

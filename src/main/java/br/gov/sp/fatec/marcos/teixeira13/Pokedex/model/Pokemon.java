@@ -2,13 +2,10 @@ package br.gov.sp.fatec.marcos.teixeira13.Pokedex.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.io.Serializable;
 import java.util.Optional;
 
 @Entity(name = "Pokemon")
-public class Pokemon implements Serializable {
-
-    private static final long serialVersionUID = -489L;
+public class Pokemon {
 
     @Id
     public short numero;
